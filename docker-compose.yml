@@ -2,10 +2,13 @@ services:
   db:
     container_name: db
     image: postgres:18.1-alpine
-#    environment:
-#      <<: *x-db-environment
+    environment:
+      POSTGRES_DB: memesis
+      POSTGRES_USER: memesis_user
+      POSTGRES_PASSWORD: memesis_password
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     networks:
