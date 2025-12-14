@@ -1,15 +1,21 @@
 
 
 
-## Features:
-* show static images
-* show gifs? 
+
+## Post element
 * title
 * tags 
-* when it was submitted
-* number of views
-* shares
+* post creation/date
+* number of views (ab test)
+* shares (ab test)
 * upvotes, downvotes
-* random
-* search
-*  
+* description? does this add value?
+
+
+## Features:
+* show static images
+* show gifs?
+* random post
+* search (later)
+* browse by category/tag
+* 

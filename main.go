@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"memesis/internal/entity"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,9 +17,17 @@ func main() {
 	s := "gopher"
 	fmt.Printf("Hello and welcome, %s!\n", s)
 
+	post := entity.Post{
+		Id:          0,
+		Title:       "",
+		ImageUrl:    "",
+		Description: "",
+		CreatedAt:   "",
+	}
+
 	for i := 1; i <= 5; i++ {
 		fmt.Println("i =", 100/i)
-		doggo()
+		doggo(post)
 	}
 
 	err := r.Run(":8080")
@@ -27,7 +37,8 @@ func main() {
 }
 
 // wtf is this thing?
-func doggo() {
+func doggo(post entity.Post) {
 	i := 10
 	fmt.Println(i)
+	fmt.Println(post)
 }
