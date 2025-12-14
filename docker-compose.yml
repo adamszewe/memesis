@@ -1,0 +1,23 @@
+services:
+  db:
+    container_name: db
+    image: postgres:18.1-alpine
+#    environment:
+#      <<: *x-db-environment
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      app_network:
+        aliases:
+          - db.lvh.me
+
+
+
+networks:
+  app_network:
+    external: false
+
+volumes:
+  db_data:
