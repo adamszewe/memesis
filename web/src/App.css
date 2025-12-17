@@ -1,46 +1,67 @@
 .app {
   width: 100%;
   min-height: 100vh;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--bg-primary);
+}
+
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: calc(100vh - 16px);
 }
 
 .app-header {
-  background: rgba(139, 90, 43, 0.15);
-  backdrop-filter: blur(10px);
-  padding: 32px 24px;
-  text-align: center;
-  border-bottom: 2px solid rgba(139, 90, 43, 0.2);
-  box-shadow: 0 2px 8px rgba(101, 67, 33, 0.1);
+  background: var(--bg-secondary);
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
 }
 
 .app-header h1 {
-  font-size: 48px;
-  font-weight: 700;
-  color: #3e2723;
-  margin: 0 0 8px 0;
-  text-shadow: 2px 2px 4px rgba(139, 90, 43, 0.1);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
 }
 
 .app-header p {
-  font-size: 18px;
-  color: #5d4037;
+  font-size: 13px;
+  color: var(--text-secondary);
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 main {
-  width: 100%;
+  flex: 1;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
 }
 
 @media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+  
   .app-header {
-    padding: 24px 16px;
+    padding: 16px 20px;
   }
 
   .app-header h1 {
-    font-size: 36px;
+    font-size: 20px;
   }
 
   .app-header p {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
