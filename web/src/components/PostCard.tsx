@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Post } from '../types/post';
 import './PostCard.css';
 
@@ -6,6 +7,8 @@ interface PostCardProps {
 }
 
 const PostCard = ({ post }: PostCardProps) => {
+  const navigate = useNavigate();
+
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -15,10 +18,14 @@ const PostCard = ({ post }: PostCardProps) => {
     });
   };
 
+  const handleNavigateToPost = () => {
+    navigate(`/post/${post.Id}`);
+  };
+
   return (
     <div className="post-card">
       <div className="post-header">
-        <h2 className="post-title">{post.Title}</h2>
+        <h2 className="post-title clickable" onClick={handleNavigateToPost}>{post.Title}</h2>
         
         {post.Tags && post.Tags.length > 0 && (
           <div className="post-tags">
@@ -31,7 +38,7 @@ const PostCard = ({ post }: PostCardProps) => {
         )}
       </div>
 
-      <div className="post-image-container">
+      <div className="post-image-container clickable" onClick={handleNavigateToPost}>
         {post.ImageUrl ? (
           <img
             src={post.ImageUrl}
