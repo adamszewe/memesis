@@ -14,6 +14,7 @@ type Post struct {
 }
 
 type Tag struct {
-	Id   string
-	Name string
+	Id      string
+	Name    string
+	IconUrl string
 }

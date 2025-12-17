@@ -59,3 +59,21 @@ func (h *PostHandler) GetPosts(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+// GetPostByID handles GET /posts/:id
+func (h *PostHandler) GetPostByID(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "post id is required"})
+		return
+	}
+
+	// Fetch post from the repository
+	post, err := h.postRepo.FindByID(c.Request.Context(), id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "post not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, post)
+}

@@ -41,6 +41,7 @@ func main() {
 
 	// Posts endpoints
 	r.GET("/posts", postHandler.GetPosts)
+	r.GET("/posts/:id", postHandler.GetPostByID)
 
 	// Start server
 	fmt.Println("Starting server on :8080")

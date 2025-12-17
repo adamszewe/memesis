@@ -3,11 +3,11 @@ export interface Tag {
 }
 
 export interface Post {
-  ID: number;
+  Id: string;
   Title: string;
   Description: string;
   ImageUrl: string;
   Tags: Tag[];
   CreatedAt: string;
-  UpdatedAt: string;
+  UpdatedAt?: string;
 }

@@ -54,6 +54,15 @@
   line-height: 1.4;
 }
 
+.clickable {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
 .post-description {
   margin: 0 0 12px 0;
   font-size: 13px;

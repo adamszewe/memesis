@@ -24,3 +24,19 @@ export const fetchPosts = async (page: number = 1): Promise<FetchPostsResponse> 
     throw error;
   }
 };
+
+export const fetchPostById = async (id: string): Promise<Post> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/posts/${id}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data: Post = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    throw error;
+  }
+};
