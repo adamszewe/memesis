@@ -1,0 +1,102 @@
+.posts-list-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.posts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.posts-loading,
+.posts-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: #5d4037;
+}
+
+.posts-loading p,
+.posts-error p {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(139, 90, 43, 0.2);
+  border-top-color: #8b5a2b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-small {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(139, 90, 43, 0.2);
+  border-top-color: #8b5a2b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.posts-loading-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: #5d4037;
+}
+
+.posts-loading-more p {
+  margin-top: 12px;
+  font-size: 16px;
+}
+
+.posts-end-message {
+  text-align: center;
+  padding: 40px 0;
+  color: #795548;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.retry-button {
+  margin-top: 16px;
+  padding: 12px 24px;
+  background: #8b5a2b;
+  color: #fff8e6;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retry-button:hover {
+  background: #6d4c41;
+}
+
+@media (max-width: 768px) {
+  .posts-list-container {
+    padding: 16px;
+  }
+
+  .posts-grid {
+    gap: 16px;
+  }
+}
