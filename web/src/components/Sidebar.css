@@ -1,6 +1,7 @@
 .sidebar {
   width: 240px;
-  min-height: calc(100vh - 16px);
+  height: calc(100vh - 16px);
+  max-height: calc(100vh - 16px);
   background: var(--bg-secondary);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
@@ -8,6 +9,9 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  position: sticky;
+  top: 8px;
+  align-self: flex-start;
 }
 
 .sidebar-header {
@@ -64,23 +68,29 @@
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
+    height: auto;
+    max-height: none;
     min-height: auto;
+    position: relative;
+    top: auto;
+    align-self: auto;
+    overflow-y: visible;
   }
-  
+
   .sidebar-nav {
     padding: 8px;
   }
-  
+
   .sidebar-menu {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
   }
-  
+
   .sidebar-menu-item {
     margin: 0;
   }
-  
+
   .sidebar-link {
     margin: 0;
   }

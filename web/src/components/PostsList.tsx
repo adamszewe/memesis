@@ -12,6 +12,7 @@ const PostsList = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Load initial posts on mount
   useEffect(() => {
     loadInitialPosts();
   }, []);
@@ -20,6 +21,12 @@ const PostsList = () => {
     try {
       setLoading(true);
       const data = await fetchPosts(1);
+
+      // Check if data and posts array exist
+      if (!data || !data.posts || !Array.isArray(data.posts)) {
+        throw new Error('Invalid data received from API');
+      }
+
       setPosts(data.posts);
       setPage(1);
       setHasMore(data.posts.length === data.page_size);
@@ -36,6 +43,13 @@ const PostsList = () => {
     try {
       const nextPage = page + 1;
       const data = await fetchPosts(nextPage);
+
+      // Check if data and posts array exist
+      if (!data || !data.posts || !Array.isArray(data.posts)) {
+        console.warn('Invalid data received from API:', data);
+        setHasMore(false);
+        return;
+      }
 
       setPosts(prevPosts => [...prevPosts, ...data.posts]);
       setPage(nextPage);
@@ -86,7 +100,7 @@ const PostsList = () => {
       >
         <div className="posts-grid">
           {posts.map((post) => (
-            <PostCard key={post.ID} post={post} />
+            <PostCard key={post.Id} post={post} />
           ))}
         </div>
       </InfiniteScroll>
