@@ -1,19 +1,20 @@
 .app {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background: var(--bg-primary);
-  padding: 0.5rem;
-  overflow: hidden;
+  padding: 0;
 }
 
 .app-header-fixed {
   position: fixed;
-  top: 0.5rem;
-  left: 0.5rem;
-  right: 0.5rem;
+  top: 0;
+  left: 0;
+  right: 0;
   padding: 1.25rem 1.5rem;
+  padding-bottom: 1rem;
   z-index: 100;
   background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-light);
 }
 
 .app-header-fixed h1 {
@@ -32,37 +33,47 @@
 
 .app-sidebar-container {
   position: fixed;
-  top: 7.5rem;
-  left: 0.5rem;
+  top: 5rem;
+  left: 0;
   width: 15rem;
-  bottom: 0.5rem;
+  bottom: 0;
   z-index: 50;
 }
 
 .app-content {
+  margin-left: 15rem;
+  margin-right: 15rem;
+  margin-top: 5rem;
+  min-height: calc(100vh - 5rem);
+}
+
+.app-right-sidebar {
   position: fixed;
-  top: 7.5rem;
-  left: calc(15rem + 1rem);
-  right: 0.5rem;
-  bottom: 0.5rem;
-  overflow-y: auto;
-  overflow-x: hidden;
+  top: 5rem;
+  right: 0;
+  width: 15rem;
+  bottom: 0;
+  z-index: 50;
+}
+
+.right-sidebar {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-light);
+  opacity: 0.5;
 }
 
 main {
-  height: 100%;
+  min-height: 100%;
   background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-light);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
 @media (max-width: 768px) {
   .app {
-    padding: 0.5rem;
+    padding: 0;
   }
 
   .app-header-fixed {
@@ -79,9 +90,9 @@ main {
 
   .app-sidebar-container {
     position: fixed;
-    top: 6rem;
-    left: 0.5rem;
-    right: 0.5rem;
+    top: 4rem;
+    left: 0;
+    right: 0;
     width: auto;
     bottom: auto;
     max-height: 12rem;
@@ -89,10 +100,13 @@ main {
   }
 
   .app-content {
-    position: fixed;
-    top: calc(6rem + 13rem + 0.5rem);
-    left: 0.5rem;
-    right: 0.5rem;
-    bottom: 0.5rem;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: calc(4rem + 12rem);
+    min-height: calc(100vh - 4rem - 12rem);
+  }
+
+  .app-right-sidebar {
+    display: none;
   }
 }

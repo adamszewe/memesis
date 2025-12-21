@@ -1,14 +1,14 @@
 .posts-list-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 56.25rem;
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: 2rem 2rem 1.5rem 2rem;
 }
 
 .posts-grid {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .posts-loading,
@@ -17,30 +17,30 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 25rem;
   color: var(--text-secondary);
 }
 
 .posts-loading p,
 .posts-error p {
-  margin-top: 16px;
-  font-size: 14px;
+  margin-top: 1rem;
+  font-size: 0.875rem;
   font-weight: 400;
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--border-light);
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0.1875rem solid var(--border-light);
   border-top-color: var(--accent-blue);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 .spinner-small {
-  width: 24px;
-  height: 24px;
-  border: 2px solid var(--border-light);
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0.125rem solid var(--border-light);
   border-top-color: var(--accent-blue);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -57,31 +57,31 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px 0;
+  padding: 2rem 0;
   color: var(--text-secondary);
 }
 
 .posts-loading-more p {
-  margin-top: 12px;
-  font-size: 13px;
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
 }
 
 .posts-end-message {
   text-align: center;
-  padding: 32px 0;
+  padding: 2rem 0;
   color: var(--text-tertiary);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 400;
 }
 
 .retry-button {
-  margin-top: 16px;
-  padding: 10px 20px;
+  margin-top: 1rem;
+  padding: 0.625rem 1.25rem;
   background: var(--bg-secondary);
   color: var(--text-primary);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-md);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -94,10 +94,10 @@
 
 @media (max-width: 768px) {
   .posts-list-container {
-    padding: 16px;
+    padding: 1rem;
   }
 
   .posts-grid {
-    gap: 16px;
+    gap: 1rem;
   }
 }

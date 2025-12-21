@@ -82,6 +82,13 @@ function AppContent() {
           <Route path="/post/:id" element={<PostPage />} />
         </Routes>
       </div>
+
+      {/* Right sidebar */}
+      <div className="app-right-sidebar">
+        <div className="right-sidebar">
+          {/* Right sidebar content placeholder */}
+        </div>
+      </div>
     </div>
   );
 }
