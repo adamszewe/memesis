@@ -57,14 +57,21 @@ function AppContent() {
 
   return (
     <div className="app">
-      <Sidebar />
+      {/* Fixed header at top left */}
+      <header className="app-header-fixed">
+        <h1>Memesis</h1>
+        <p>Infinite scroll of memes and posts</p>
+      </header>
+
+      {/* Sidebar below header on the left */}
+      <div className="app-sidebar-container">
+        <Sidebar />
+      </div>
+
+      {/* Main scrollable content area */}
       <div className="app-content">
         {/* Always render PostsList, but hide it when viewing a post */}
-        <div style={{ display: isPostDetailPage ? 'none' : 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-          <header className="app-header">
-            <h1>Memesis</h1>
-            <p>Infinite scroll of memes and posts</p>
-          </header>
+        <div style={{ display: isPostDetailPage ? 'none' : 'block' }}>
           <main>
             <PostsList />
           </main>

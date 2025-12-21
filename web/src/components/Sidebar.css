@@ -1,7 +1,6 @@
 .sidebar {
-  width: 240px;
-  height: calc(100vh - 16px);
-  max-height: calc(100vh - 16px);
+  width: 100%;
+  height: 100%;
   background: var(--bg-secondary);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
@@ -9,27 +8,24 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  position: sticky;
-  top: 8px;
-  align-self: flex-start;
 }
 
 .sidebar-header {
-  padding: 20px 16px 16px 16px;
+  padding: 1.25rem 1rem 1rem 1rem;
   border-bottom: 1px solid var(--border-light);
 }
 
 .sidebar-title {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03125rem;
 }
 
 .sidebar-nav {
   flex: 1;
-  padding: 8px 0;
+  padding: 0.5rem 0;
 }
 
 .sidebar-menu {
@@ -39,18 +35,18 @@
 }
 
 .sidebar-menu-item {
-  margin: 2px 0;
+  margin: 0.125rem 0;
 }
 
 .sidebar-link {
   display: block;
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400;
   text-decoration: none;
   border-radius: var(--radius-sm);
-  margin: 0 8px;
+  margin: 0 0.5rem;
   transition: all 0.15s ease;
 }
 
@@ -67,24 +63,17 @@
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 100%;
     height: auto;
-    max-height: none;
-    min-height: auto;
-    position: relative;
-    top: auto;
-    align-self: auto;
-    overflow-y: visible;
   }
 
   .sidebar-nav {
-    padding: 8px;
+    padding: 0.5rem;
   }
 
   .sidebar-menu {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .sidebar-menu-item {

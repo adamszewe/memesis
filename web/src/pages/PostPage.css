@@ -1,11 +1,18 @@
 .post-page {
-  max-width: 50rem;
-  margin: 0 auto;
-  padding: 1.5rem;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .post-page-nav {
-  margin-bottom: 1.5rem;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  margin-bottom: 0;
 }
 
 .back-button {
@@ -30,6 +37,10 @@
   text-align: center;
   padding: 4rem 2rem;
   color: var(--text-primary);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
 }
 
 .post-page-error h2 {

@@ -1,67 +1,98 @@
 .app {
   width: 100%;
-  min-height: 100vh;
-  display: flex;
-  gap: 8px;
-  padding: 8px;
+  height: 100vh;
+  background: var(--bg-primary);
+  padding: 0.5rem;
+  overflow: hidden;
+}
+
+.app-header-fixed {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  z-index: 100;
   background: var(--bg-primary);
 }
 
-.app-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: calc(100vh - 16px);
-}
-
-.app-header {
-  background: var(--bg-secondary);
-  padding: 20px 24px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-light);
-}
-
-.app-header h1 {
-  font-size: 24px;
+.app-header-fixed h1 {
+  font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin: 0 0 4px 0;
+  margin: 0 0 0.25rem 0;
 }
 
-.app-header p {
-  font-size: 13px;
+.app-header-fixed p {
+  font-size: 0.8125rem;
   color: var(--text-secondary);
   margin: 0;
   font-weight: 400;
 }
 
+.app-sidebar-container {
+  position: fixed;
+  top: 7.5rem;
+  left: 0.5rem;
+  width: 15rem;
+  bottom: 0.5rem;
+  z-index: 50;
+}
+
+.app-content {
+  position: fixed;
+  top: 7.5rem;
+  left: calc(15rem + 1rem);
+  right: 0.5rem;
+  bottom: 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 main {
-  flex: 1;
+  height: 100%;
   background: var(--bg-secondary);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 768px) {
   .app {
-    flex-direction: column;
-    gap: 8px;
-    padding: 8px;
-  }
-  
-  .app-header {
-    padding: 16px 20px;
+    padding: 0.5rem;
   }
 
-  .app-header h1 {
-    font-size: 20px;
+  .app-header-fixed {
+    padding: 1rem 1.25rem;
   }
 
-  .app-header p {
-    font-size: 12px;
+  .app-header-fixed h1 {
+    font-size: 1.25rem;
+  }
+
+  .app-header-fixed p {
+    font-size: 0.75rem;
+  }
+
+  .app-sidebar-container {
+    position: fixed;
+    top: 6rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    bottom: auto;
+    max-height: 12rem;
+    overflow-y: auto;
+  }
+
+  .app-content {
+    position: fixed;
+    top: calc(6rem + 13rem + 0.5rem);
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
   }
 }
