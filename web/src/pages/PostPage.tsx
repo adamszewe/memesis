@@ -39,10 +39,8 @@ const PostPage = () => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      month: 'short',
+      day: 'numeric'
     });
   };
 
@@ -69,16 +67,16 @@ const PostPage = () => {
 
   return (
     <div className="post-page">
-      <div className="post-page-header">
+      <div className="post-page-nav">
         <button onClick={() => navigate('/')} className="back-button">
           ← Back to Posts
         </button>
       </div>
 
-      <article className="post-page-content">
-        <header className="post-page-title-section">
+      <article className="post-page-card">
+        <div className="post-page-header">
           <h1 className="post-page-title">{post.Title}</h1>
-          
+
           {post.Tags && post.Tags.length > 0 && (
             <div className="post-page-tags">
               {post.Tags.map((tag, index) => (
@@ -88,11 +86,7 @@ const PostPage = () => {
               ))}
             </div>
           )}
-
-          <div className="post-page-meta">
-            <span className="post-page-date">{formatDate(post.CreatedAt)}</span>
-          </div>
-        </header>
+        </div>
 
         <div className="post-page-image-container">
           {post.ImageUrl ? (
@@ -106,11 +100,15 @@ const PostPage = () => {
           )}
         </div>
 
-        {post.Description && (
-          <div className="post-page-description">
-            <p>{post.Description}</p>
+        <div className="post-page-content">
+          {post.Description && (
+            <p className="post-page-description">{post.Description}</p>
+          )}
+
+          <div className="post-page-meta">
+            <span className="post-page-date">{formatDate(post.CreatedAt)}</span>
           </div>
-        )}
+        </div>
       </article>
     </div>
   );

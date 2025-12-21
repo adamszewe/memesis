@@ -43,6 +43,12 @@ Memesis is a meme-sharing web application with a Go backend API and React fronte
 - `web/src/services/api.ts`: API client (calls `/api/posts`)
 - `web/src/types/post.ts`: TypeScript types
 
+Frontend rules:
+* Use TypeScript
+* Use Vite for local development 
+* Use re and rem unit sizes, avoid px
+* Use island theme UI
+
 ## Development Commands
 
 ### Backend (Go)
