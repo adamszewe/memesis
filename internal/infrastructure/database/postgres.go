@@ -3,8 +3,10 @@ package database
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
+	"github.com/goccy/go-yaml/token"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -59,12 +61,14 @@ func LoadConfigFromEnv() Config {
 		User:     getEnv("DB_USER", "memesis_user"),
 		Password: getEnv("DB_PASSWORD", "memesis_password"),
 		DBName:   getEnv("DB_NAME", "memesis"),
-		SSLMode:  getEnv("DB_SSLMODE", "disable"),
+		// todo: may add ssl
+		SSLMode: getEnv("DB_SSLMODE", "disable"),
 	}
 }
 
 func getEnv(key, defaultValue string) string {
-	// You can use os.Getenv here or a config library
-	// For now, returning defaults
+	if value := os.Getenv(key); value != "" {
+		return value
+	}
 	return defaultValue
 }

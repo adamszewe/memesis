@@ -3,13 +3,18 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"memesis/internal/repo"
 
 	"github.com/gin-gonic/gin"
 )
 
-const PageSize = 25
+const (
+	PageSize = 25
+	MaxPage  = 10000 // Maximum page number to prevent overflow
+	MaxIDLen = 100   // Maximum length for post ID
+)
 
 type PostHandler struct {
 	postRepo repo.PostRepository
@@ -36,6 +41,12 @@ func (h *PostHandler) GetPosts(c *gin.Context) {
 	page, err := strconv.Atoi(pageStr)
 	if err != nil || page < 1 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid page parameter"})
+		return
+	}
+
+	// Validate maximum page to prevent integer overflow
+	if page > MaxPage {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "page parameter exceeds maximum allowed value"})
 		return
 	}
 
@@ -68,6 +79,19 @@ func (h *PostHandler) GetPostByID(c *gin.Context) {
 		return
 	}
 
+	// Validate ID length to prevent abuse
+	if len(id) > MaxIDLen {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "post id exceeds maximum length"})
+		return
+	}
+
+	// Validate ID format (alphanumeric, hyphens, underscores only)
+	id = strings.TrimSpace(id)
+	if !isValidID(id) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid post id format"})
+		return
+	}
+
 	// Fetch post from the repository
 	post, err := h.postRepo.FindByID(c.Request.Context(), id)
 	if err != nil {
@@ -76,4 +100,20 @@ func (h *PostHandler) GetPostByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, post)
+}
+
+// isValidID checks if the ID contains only safe characters
+func isValidID(id string) bool {
+	if len(id) == 0 {
+		return false
+	}
+	for _, char := range id {
+		if !((char >= 'a' && char <= 'z') ||
+			(char >= 'A' && char <= 'Z') ||
+			(char >= '0' && char <= '9') ||
+			char == '-' || char == '_') {
+			return false
+		}
+	}
+	return true
 }

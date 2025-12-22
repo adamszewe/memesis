@@ -5,11 +5,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"memesis/internal/handler"
 	"memesis/internal/infrastructure/database"
+	"memesis/internal/middleware"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/time/rate"
 )
 
 func main() {
@@ -33,6 +37,25 @@ func main() {
 
 	// Setup router
 	r := gin.Default()
+
+	// CORS configuration - restrict to your frontend domain in production
+	corsConfig := cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:3000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}
+	r.Use(cors.New(corsConfig))
+
+	// Security headers middleware
+	r.Use(middleware.SecurityHeaders())
+
+	// Rate limiting: 10 requests per second with burst of 20
+	rateLimiter := middleware.NewRateLimiter(rate.Limit(10), 20)
+	rateLimiter.Cleanup(5 * time.Minute)
+	r.Use(rateLimiter.Middleware())
 
 	// Health check endpoint
 	r.GET("/ping", func(c *gin.Context) {

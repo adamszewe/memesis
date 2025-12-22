@@ -3,14 +3,14 @@ services:
     container_name: db
     image: postgres:18.1-alpine
     environment:
-      POSTGRES_DB: memesis
-      POSTGRES_USER: memesis_user
-      POSTGRES_PASSWORD: memesis_password
+      POSTGRES_DB: ${DB_NAME:-memesis}
+      POSTGRES_USER: ${DB_USER:-memesis_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Database password must be set in .env file}
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./migrations:/docker-entrypoint-initdb.d
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5432}:5432"
     networks:
       app_network:
         aliases:
