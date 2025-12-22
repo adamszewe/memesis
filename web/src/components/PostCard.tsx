@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { formatDistanceToNow } from 'date-fns';
 import { Post } from '../types/post';
 import { useLoadingBar } from '../contexts/LoadingBarContext';
 import './PostCard.css';
@@ -12,12 +13,7 @@ const PostCard = ({ post }: PostCardProps) => {
   const { startLoading } = useLoadingBar();
 
   const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
+    return formatDistanceToNow(new Date(dateString), { addSuffix: true });
   };
 
   const handleNavigateToPost = async () => {
