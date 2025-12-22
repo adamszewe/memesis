@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import PostCard from './PostCard';
+import PageContainer from './PageContainer';
 import { fetchPosts } from '../services/api';
 import { Post } from '../types/post';
 import './PostsList.css';
@@ -62,26 +63,30 @@ const PostsList = () => {
 
   if (loading) {
     return (
-      <div className="posts-loading">
-        <div className="spinner"></div>
-        <p>Loading posts...</p>
-      </div>
+      <PageContainer>
+        <div className="posts-loading">
+          <div className="spinner"></div>
+          <p>Loading posts...</p>
+        </div>
+      </PageContainer>
     );
   }
 
   if (error) {
     return (
-      <div className="posts-error">
-        <p>{error}</p>
-        <button onClick={loadInitialPosts} className="retry-button">
-          Retry
-        </button>
-      </div>
+      <PageContainer>
+        <div className="posts-error">
+          <p>{error}</p>
+          <button onClick={loadInitialPosts} className="retry-button">
+            Retry
+          </button>
+        </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="posts-list-container">
+    <PageContainer>
       <InfiniteScroll
         dataLength={posts.length}
         next={loadMorePosts}
@@ -104,7 +109,7 @@ const PostsList = () => {
           ))}
         </div>
       </InfiniteScroll>
-    </div>
+    </PageContainer>
   );
 };
 

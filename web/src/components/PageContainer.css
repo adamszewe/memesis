@@ -1,0 +1,16 @@
+.page-container {
+  min-height: 100%;
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 56.25rem;
+  margin: 0 auto;
+  padding: 2rem 2rem 1.5rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 1rem;
+  }
+}

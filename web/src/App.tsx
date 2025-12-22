@@ -72,9 +72,7 @@ function AppContent() {
       <div className="app-content">
         {/* Always render PostsList, but hide it when viewing a post */}
         <div style={{ display: isPostDetailPage ? 'none' : 'block' }}>
-          <main>
-            <PostsList />
-          </main>
+          <PostsList />
         </div>
 
         {/* Render PostPage when on a post detail route */}
