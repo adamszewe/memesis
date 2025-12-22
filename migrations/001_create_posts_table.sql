@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS posts (
     image_url TEXT,
     description TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    tags TEXT[] NOT NULL DEFAULT '{}',
+    categories TEXT[] NOT NULL DEFAULT '{}',
 
     -- Constraints
     CONSTRAINT title_not_empty CHECK (length(trim(title)) > 0)
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS posts (
 
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_posts_created_at ON posts(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_posts_tags ON posts USING GIN(tags);
+CREATE INDEX IF NOT EXISTS idx_posts_categories ON posts USING GIN(categories);
 
 -- Optional: Full-text search on title/description
 CREATE INDEX IF NOT EXISTS idx_posts_search ON posts USING GIN(

@@ -5,7 +5,7 @@
 TRUNCATE TABLE posts CASCADE;
 
 -- Insert sample meme posts (100 total)
-INSERT INTO posts (id, title, image_url, description, tags) VALUES
+INSERT INTO posts (id, title, image_url, description, categories) VALUES
     ('post-1', 'Distracted Boyfriend', 'https://i.imgflip.com/1ur9b0.jpg', 'The classic distracted boyfriend meme', ARRAY['classic', 'relationship', 'funny']),
     ('post-2', 'Drake Hotline Bling', 'https://i.imgflip.com/30b1gx.jpg', 'Drake approving and disapproving', ARRAY['drake', 'reaction', 'classic']),
     ('post-3', 'Two Buttons', 'https://i.imgflip.com/1g8my4.jpg', 'Daily struggle choosing between two options', ARRAY['choices', 'struggle', 'relatable']),

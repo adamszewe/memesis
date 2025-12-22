@@ -70,14 +70,14 @@
   color: var(--text-secondary);
 }
 
-.post-tags {
+.post-categories {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
   margin-bottom: 0;
 }
 
-.post-tag {
+.post-category {
   background: var(--bg-hover);
   color: var(--text-secondary);
   padding: 0.25rem 0.625rem;

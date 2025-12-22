@@ -3,12 +3,15 @@ import { useEffect, useRef } from 'react'
 import Sidebar from './components/Sidebar'
 import PostsList from './components/PostsList'
 import PostPage from './pages/PostPage'
+import LoadingBar from './components/LoadingBar'
+import { LoadingBarProvider, useLoadingBar } from './contexts/LoadingBarContext'
 import './App.css'
 
 function AppContent() {
   const location = useLocation();
   const isPostDetailPage = location.pathname.startsWith('/post/');
   const savedScrollPosition = useRef<number>(0);
+  const { isLoading } = useLoadingBar();
 
   // Disable browser's automatic scroll restoration
   useEffect(() => {
@@ -57,6 +60,8 @@ function AppContent() {
 
   return (
     <div className="app">
+      <LoadingBar isLoading={isLoading} />
+
       {/* Fixed header at top left */}
       <header className="app-header-fixed">
         <h1>Memesis</h1>
@@ -94,7 +99,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <LoadingBarProvider>
+        <AppContent />
+      </LoadingBarProvider>
     </Router>
   )
 }

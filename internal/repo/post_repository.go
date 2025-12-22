@@ -16,8 +16,8 @@ type PostRepository interface {
 	// FindAll retrieves all posts with pagination
 	FindAll(ctx context.Context, limit, offset int) ([]*entity.Post, error)
 
-	// FindByTag retrieves posts that have a specific tag
-	FindByTag(ctx context.Context, tag string, limit, offset int) ([]*entity.Post, error)
+	// FindByCategory retrieves posts that have a specific category
+	FindByCategory(ctx context.Context, category string, limit, offset int) ([]*entity.Post, error)
 
 	// Update updates an existing post
 	Update(ctx context.Context, post *entity.Post) error
@@ -25,6 +25,6 @@ type PostRepository interface {
 	// Delete deletes a post by its ID
 	Delete(ctx context.Context, id string) error
 
-	// GetAllTags retrieves all unique tags with their counts
-	GetAllTags(ctx context.Context) (map[string]int, error)
+	// GetAllCategories retrieves all unique categories with their counts
+	GetAllCategories(ctx context.Context) (map[string]int, error)
 }

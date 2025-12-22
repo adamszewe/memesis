@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Memesis is a meme-sharing web application with a Go backend API and React frontend. It features infinite scroll, tag-based browsing, and individual post views.
+Memesis is a meme-sharing web application with a Go backend API and React frontend. It features infinite scroll, category-based browsing, and individual post views.
 
 ## Architecture
 
@@ -15,7 +15,7 @@ Memesis is a meme-sharing web application with a Go backend API and React fronte
 
 **Key Components**:
 - `main.go`: Application entry point, sets up database pool, repository, handler, and routes
-- `internal/entity/`: Domain models (Post, Tag)
+- `internal/entity/`: Domain models (Post, Category)
 - `internal/repo/`: Repository interfaces (`PostRepository`)
 - `internal/infrastructure/database/`: PostgreSQL implementation of repositories and connection pool setup
 - `internal/handler/`: HTTP handlers (Gin controllers)
@@ -104,11 +104,11 @@ docker-compose up
 - `image_url` (TEXT): URL to image
 - `description` (TEXT): Post description
 - `created_at` (TIMESTAMPTZ): Creation timestamp
-- `tags` (TEXT[]): Array of tag names
+- `categories` (TEXT[]): Array of category names
 
 **Indexes**:
 - `idx_posts_created_at`: For chronological sorting
-- `idx_posts_tags`: GIN index for tag queries
+- `idx_posts_categories`: GIN index for category queries
 - `idx_posts_search`: Full-text search on title/description
 
 ## Key Patterns
@@ -130,8 +130,8 @@ type PostsResponse struct {
 }
 ```
 
-### Tag Storage
-Tags are stored as PostgreSQL TEXT[] arrays in the posts table. The Tag entity has fields for `Id`, `Name`, and `IconUrl`, but currently only `Name` is populated from the database.
+### Category Storage
+Categories are stored as PostgreSQL TEXT[] arrays in the posts table. The Category entity has fields for `Id`, `Name`, and `IconUrl`, but currently only `Name` is populated from the database.
 
 ## Important Notes
 

@@ -29,13 +29,13 @@ func NewPostgresPostRepository(pool *pgxpool.Pool) *PostgresPostRepository {
 
 // Create creates a new post
 func (r *PostgresPostRepository) Create(ctx context.Context, post *entity.Post) error {
-	tagNames := make([]string, len(post.Tags))
-	for i, tag := range post.Tags {
-		tagNames[i] = tag.Name
+	categoryNames := make([]string, len(post.Categories))
+	for i, category := range post.Categories {
+		categoryNames[i] = category.Name
 	}
 
 	query := `
-		INSERT INTO posts (id, title, image_url, description, created_at, tags)
+		INSERT INTO posts (id, title, image_url, description, created_at, categories)
 		VALUES ($1, $2, $3, $4, $5, $6)
 	`
 
@@ -45,7 +45,7 @@ func (r *PostgresPostRepository) Create(ctx context.Context, post *entity.Post) 
 		post.ImageUrl,
 		post.Description,
 		post.CreatedAt,
-		tagNames,
+		categoryNames,
 	)
 
 	if err != nil {
@@ -58,13 +58,13 @@ func (r *PostgresPostRepository) Create(ctx context.Context, post *entity.Post) 
 // FindByID retrieves a post by its ID
 func (r *PostgresPostRepository) FindByID(ctx context.Context, id string) (*entity.Post, error) {
 	query := `
-		SELECT id, title, image_url, description, created_at, tags
+		SELECT id, title, image_url, description, created_at, categories
 		FROM posts
 		WHERE id = $1
 	`
 
 	var post entity.Post
-	var tagNames []string
+	var categoryNames []string
 
 	err := r.pool.QueryRow(ctx, query, id).Scan(
 		&post.Id,
@@ -72,7 +72,7 @@ func (r *PostgresPostRepository) FindByID(ctx context.Context, id string) (*enti
 		&post.ImageUrl,
 		&post.Description,
 		&post.CreatedAt,
-		&tagNames,
+		&categoryNames,
 	)
 
 	if err != nil {
@@ -82,10 +82,10 @@ func (r *PostgresPostRepository) FindByID(ctx context.Context, id string) (*enti
 		return nil, fmt.Errorf("failed to find post: %w", err)
 	}
 
-	// Convert tag names to Tag entities
-	post.Tags = make([]entity.Tag, len(tagNames))
-	for i, name := range tagNames {
-		post.Tags[i] = entity.Tag{Name: name}
+	// Convert category names to Category entities
+	post.Categories = make([]entity.Category, len(categoryNames))
+	for i, name := range categoryNames {
+		post.Categories[i] = entity.Category{Name: name}
 	}
 
 	return &post, nil
@@ -94,7 +94,7 @@ func (r *PostgresPostRepository) FindByID(ctx context.Context, id string) (*enti
 // FindAll retrieves all posts with pagination
 func (r *PostgresPostRepository) FindAll(ctx context.Context, limit, offset int) ([]*entity.Post, error) {
 	query := `
-		SELECT id, title, image_url, description, created_at, tags
+		SELECT id, title, image_url, description, created_at, categories
 		FROM posts
 		ORDER BY created_at DESC
 		LIMIT $1 OFFSET $2
@@ -110,7 +110,7 @@ func (r *PostgresPostRepository) FindAll(ctx context.Context, limit, offset int)
 
 	for rows.Next() {
 		var post entity.Post
-		var tagNames []string
+		var categoryNames []string
 
 		err := rows.Scan(
 			&post.Id,
@@ -118,17 +118,17 @@ func (r *PostgresPostRepository) FindAll(ctx context.Context, limit, offset int)
 			&post.ImageUrl,
 			&post.Description,
 			&post.CreatedAt,
-			&tagNames,
+			&categoryNames,
 		)
 
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan post: %w", err)
 		}
 
-		// Convert tag names to Tag entities
-		post.Tags = make([]entity.Tag, len(tagNames))
-		for i, name := range tagNames {
-			post.Tags[i] = entity.Tag{Name: name}
+		// Convert category names to Category entities
+		post.Categories = make([]entity.Category, len(categoryNames))
+		for i, name := range categoryNames {
+			post.Categories[i] = entity.Category{Name: name}
 		}
 
 		posts = append(posts, &post)
@@ -141,19 +141,19 @@ func (r *PostgresPostRepository) FindAll(ctx context.Context, limit, offset int)
 	return posts, nil
 }
 
-// FindByTag retrieves posts that have a specific tag
-func (r *PostgresPostRepository) FindByTag(ctx context.Context, tag string, limit, offset int) ([]*entity.Post, error) {
+// FindByCategory retrieves posts that have a specific category
+func (r *PostgresPostRepository) FindByCategory(ctx context.Context, category string, limit, offset int) ([]*entity.Post, error) {
 	query := `
-		SELECT id, title, image_url, description, created_at, tags
+		SELECT id, title, image_url, description, created_at, categories
 		FROM posts
-		WHERE $1 = ANY(tags)
+		WHERE $1 = ANY(categories)
 		ORDER BY created_at DESC
 		LIMIT $2 OFFSET $3
 	`
 
-	rows, err := r.pool.Query(ctx, query, tag, limit, offset)
+	rows, err := r.pool.Query(ctx, query, category, limit, offset)
 	if err != nil {
-		return nil, fmt.Errorf("failed to query posts by tag: %w", err)
+		return nil, fmt.Errorf("failed to query posts by category: %w", err)
 	}
 	defer rows.Close()
 
@@ -161,7 +161,7 @@ func (r *PostgresPostRepository) FindByTag(ctx context.Context, tag string, limi
 
 	for rows.Next() {
 		var post entity.Post
-		var tagNames []string
+		var categoryNames []string
 
 		err := rows.Scan(
 			&post.Id,
@@ -169,17 +169,17 @@ func (r *PostgresPostRepository) FindByTag(ctx context.Context, tag string, limi
 			&post.ImageUrl,
 			&post.Description,
 			&post.CreatedAt,
-			&tagNames,
+			&categoryNames,
 		)
 
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan post: %w", err)
 		}
 
-		// Convert tag names to Tag entities
-		post.Tags = make([]entity.Tag, len(tagNames))
-		for i, name := range tagNames {
-			post.Tags[i] = entity.Tag{Name: name}
+		// Convert category names to Category entities
+		post.Categories = make([]entity.Category, len(categoryNames))
+		for i, name := range categoryNames {
+			post.Categories[i] = entity.Category{Name: name}
 		}
 
 		posts = append(posts, &post)
@@ -194,14 +194,14 @@ func (r *PostgresPostRepository) FindByTag(ctx context.Context, tag string, limi
 
 // Update updates an existing post
 func (r *PostgresPostRepository) Update(ctx context.Context, post *entity.Post) error {
-	tagNames := make([]string, len(post.Tags))
-	for i, tag := range post.Tags {
-		tagNames[i] = tag.Name
+	categoryNames := make([]string, len(post.Categories))
+	for i, category := range post.Categories {
+		categoryNames[i] = category.Name
 	}
 
 	query := `
 		UPDATE posts
-		SET title = $2, image_url = $3, description = $4, tags = $5
+		SET title = $2, image_url = $3, description = $4, categories = $5
 		WHERE id = $1
 	`
 
@@ -210,7 +210,7 @@ func (r *PostgresPostRepository) Update(ctx context.Context, post *entity.Post) 
 		post.Title,
 		post.ImageUrl,
 		post.Description,
-		tagNames,
+		categoryNames,
 	)
 
 	if err != nil {
@@ -240,38 +240,38 @@ func (r *PostgresPostRepository) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-// GetAllTags retrieves all unique tags with their counts
-func (r *PostgresPostRepository) GetAllTags(ctx context.Context) (map[string]int, error) {
+// GetAllCategories retrieves all unique categories with their counts
+func (r *PostgresPostRepository) GetAllCategories(ctx context.Context) (map[string]int, error) {
 	query := `
-		SELECT unnest(tags) as tag, COUNT(*) as count
+		SELECT unnest(categories) as category, COUNT(*) as count
 		FROM posts
-		GROUP BY tag
+		GROUP BY category
 		ORDER BY count DESC
 	`
 
 	rows, err := r.pool.Query(ctx, query)
 	if err != nil {
-		return nil, fmt.Errorf("failed to query tags: %w", err)
+		return nil, fmt.Errorf("failed to query categories: %w", err)
 	}
 	defer rows.Close()
 
-	tags := make(map[string]int)
+	categories := make(map[string]int)
 
 	for rows.Next() {
-		var tag string
+		var category string
 		var count int
 
-		err := rows.Scan(&tag, &count)
+		err := rows.Scan(&category, &count)
 		if err != nil {
-			return nil, fmt.Errorf("failed to scan tag: %w", err)
+			return nil, fmt.Errorf("failed to scan category: %w", err)
 		}
 
-		tags[tag] = count
+		categories[category] = count
 	}
 
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("error iterating tags: %w", err)
+		return nil, fmt.Errorf("error iterating categories: %w", err)
 	}
 
-	return tags, nil
+	return categories, nil
 }

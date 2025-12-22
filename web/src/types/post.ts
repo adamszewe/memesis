@@ -1,4 +1,4 @@
-export interface Tag {
+export interface Category {
   Name: string;
 }
 
@@ -7,7 +7,7 @@ export interface Post {
   Title: string;
   Description: string;
   ImageUrl: string;
-  Tags: Tag[];
+  Categories: Category[];
   CreatedAt: string;
   UpdatedAt?: string;
 }

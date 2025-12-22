@@ -10,10 +10,10 @@ type Post struct {
 	ImageUrl    string
 	Description string
 	CreatedAt   time.Time // iso date
-	Tags        []Tag
+	Categories  []Category
 }
 
-type Tag struct {
+type Category struct {
 	Id      string
 	Name    string
 	IconUrl string

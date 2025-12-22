@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Post } from '../types/post';
+import { useLoadingBar } from '../contexts/LoadingBarContext';
 import './PostCard.css';
 
 interface PostCardProps {
@@ -8,6 +9,7 @@ interface PostCardProps {
 
 const PostCard = ({ post }: PostCardProps) => {
   const navigate = useNavigate();
+  const { startLoading } = useLoadingBar();
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -18,7 +20,12 @@ const PostCard = ({ post }: PostCardProps) => {
     });
   };
 
-  const handleNavigateToPost = () => {
+  const handleNavigateToPost = async () => {
+    startLoading();
+
+    // Minimum delay of 50ms for better UX
+    await new Promise(resolve => setTimeout(resolve, 50));
+
     navigate(`/post/${post.Id}`);
   };
 
@@ -27,11 +34,11 @@ const PostCard = ({ post }: PostCardProps) => {
       <div className="post-header">
         <h2 className="post-title clickable" onClick={handleNavigateToPost}>{post.Title}</h2>
         
-        {post.Tags && post.Tags.length > 0 && (
-          <div className="post-tags">
-            {post.Tags.map((tag, index) => (
-              <span key={index} className="post-tag">
-                #{tag.Name}
+        {post.Categories && post.Categories.length > 0 && (
+          <div className="post-categories">
+            {post.Categories.map((category, index) => (
+              <span key={index} className="post-category">
+                #{category.Name}
               </span>
             ))}
           </div>
