@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import Sidebar from './components/Sidebar'
 import PostsList from './components/PostsList'
 import PostPage from './pages/PostPage'
@@ -10,52 +10,19 @@ import './App.css'
 function AppContent() {
   const location = useLocation();
   const isPostDetailPage = location.pathname.startsWith('/post/');
-  const savedScrollPosition = useRef<number>(0);
   const { isLoading } = useLoadingBar();
 
-  // Disable browser's automatic scroll restoration
-  useEffect(() => {
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-  }, []);
-
-  // Continuously save scroll position as user scrolls (only on home page)
-  useEffect(() => {
-    if (!isPostDetailPage) {
-      const handleScroll = () => {
-        const currentScroll = window.scrollY;
-
-        // Ignore scroll to 0 if we have a saved position > 0
-        // This prevents React Router's navigation scroll from overwriting our saved position
-        if (currentScroll === 0 && savedScrollPosition.current > 0) {
-          return;
-        }
-
-        savedScrollPosition.current = currentScroll;
-      };
-
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }
-  }, [isPostDetailPage]);
-
-  // Handle scroll position when navigating between pages
+  // Prevent body scroll when overlay is active to maintain scroll position
   useEffect(() => {
     if (isPostDetailPage) {
-      // Scroll to top for post detail page
-      window.scrollTo(0, 0);
-    } else if (savedScrollPosition.current > 0) {
-      // Restore scroll position when showing posts list
-      // Use requestAnimationFrame to ensure it runs after React Router's scroll reset
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          window.scrollTo(0, savedScrollPosition.current);
-        });
-      });
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isPostDetailPage]);
 
   return (
@@ -75,15 +42,17 @@ function AppContent() {
 
       {/* Main scrollable content area */}
       <div className="app-content">
-        {/* Always render PostsList, but hide it when viewing a post */}
-        <div style={{ display: isPostDetailPage ? 'none' : 'block' }}>
-          <PostsList />
-        </div>
+        {/* Always render and keep PostsList visible */}
+        <PostsList />
 
-        {/* Render PostPage when on a post detail route */}
-        <Routes>
-          <Route path="/post/:id" element={<PostPage />} />
-        </Routes>
+        {/* Overlay PostPage on top when viewing a post */}
+        {isPostDetailPage && (
+          <div className="post-page-overlay">
+            <Routes>
+              <Route path="/post/:id" element={<PostPage />} />
+            </Routes>
+          </div>
+        )}
       </div>
 
       {/* Right sidebar */}

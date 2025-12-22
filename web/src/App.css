@@ -45,6 +45,18 @@
   margin-right: 15rem;
   margin-top: 5rem;
   min-height: calc(100vh - 5rem);
+  position: relative;
+}
+
+.post-page-overlay {
+  position: fixed;
+  top: 5rem;
+  left: 15rem;
+  right: 15rem;
+  bottom: 0;
+  background: var(--bg-primary);
+  z-index: 75;
+  overflow-y: auto;
 }
 
 .app-right-sidebar {
@@ -97,6 +109,12 @@
     margin-right: 0;
     margin-top: calc(4rem + 12rem);
     min-height: calc(100vh - 4rem - 12rem);
+  }
+
+  .post-page-overlay {
+    left: 0;
+    right: 0;
+    top: calc(4rem + 12rem);
   }
 
   .app-right-sidebar {
