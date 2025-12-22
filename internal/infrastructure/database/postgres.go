@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/goccy/go-yaml/token"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

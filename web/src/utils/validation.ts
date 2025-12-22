@@ -69,14 +69,16 @@ export function validatePostsResponse(data: unknown): { posts: Post[]; page: num
   const response = data as Record<string, unknown>;
 
   if (
-    !Array.isArray(response.posts) ||
     typeof response.page !== 'number' ||
     typeof response.page_size !== 'number'
   ) {
     return null;
   }
 
-  const validatedPosts = response.posts
+  // Handle both null and array for posts
+  const postsArray = Array.isArray(response.posts) ? response.posts : [];
+
+  const validatedPosts = postsArray
     .map(validatePost)
     .filter((post): post is Post => post !== null);
 
@@ -84,6 +86,6 @@ export function validatePostsResponse(data: unknown): { posts: Post[]; page: num
     posts: validatedPosts,
     page: response.page,
     page_size: response.page_size,
-    total: typeof response.total === 'number' ? response.total : validatedPosts.length,
+    total: typeof response.total_shown === 'number' ? response.total_shown : validatedPosts.length,
   };
 }
