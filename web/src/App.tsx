@@ -32,7 +32,6 @@ function AppContent() {
       {/* Fixed header at top left */}
       <header className="app-header-fixed">
         <h1>Memesis</h1>
-        <p>Infinite scroll of memes and posts</p>
       </header>
 
       {/* Sidebar below header on the left */}
