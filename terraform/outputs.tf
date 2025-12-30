@@ -83,3 +83,24 @@ output "github_oidc_provider_arn" {
   description = "ARN of the GitHub OIDC provider (if enabled)"
   value       = var.enable_github_oidc ? aws_iam_openid_connect_provider.github[0].arn : null
 }
+
+# S3 and CloudFront Outputs
+output "s3_memes_bucket_name" {
+  description = "S3 bucket name for meme images"
+  value       = aws_s3_bucket.memes.id
+}
+
+output "cloudfront_distribution_id" {
+  description = "CloudFront distribution ID"
+  value       = aws_cloudfront_distribution.memes.id
+}
+
+output "cloudfront_domain_name" {
+  description = "CloudFront domain name for accessing memes"
+  value       = aws_cloudfront_distribution.memes.domain_name
+}
+
+output "cloudfront_url" {
+  description = "Full CloudFront URL (use this as base URL for meme images)"
+  value       = "https://${aws_cloudfront_distribution.memes.domain_name}"
+}
