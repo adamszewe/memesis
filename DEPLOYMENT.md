@@ -2,11 +2,30 @@
 
 This guide explains how to deploy Memesis to your EC2 instance using Docker Compose and ECR.
 
+## Architecture Overview
+
+The production deployment uses a multi-container architecture:
+
+- **Frontend (nginx)**: Serves static React files and proxies API requests to backend
+  - Port 80 (public)
+  - Handles all user traffic
+  - Proxies `/api/*` requests to backend
+
+- **Backend (Go)**: API server
+  - Port 8080 (internal only, not exposed)
+  - Accessed only via frontend proxy
+
+- **Database (PostgreSQL)**: Data storage
+  - Port 5432 (internal only, not exposed)
+  - Accessed only by backend
+
+**Security**: Only the frontend (nginx) is exposed to the internet. The backend and database are only accessible within the Docker network.
+
 ## Prerequisites
 
 ✅ Your Terraform infrastructure is already set up and includes:
 - EC2 instance with Docker & Docker Compose installed
-- ECR repository with your backend image
+- ECR repositories for backend and frontend images
 - IAM role attached to EC2 with ECR read permissions
 - Security groups configured
 
@@ -70,7 +89,7 @@ aws ecr get-login-password --region eu-west-1 | \
 cd /opt/memesis
 
 # Copy the production environment template
-cp .env.production.example .env
+cp .env.prod.example .env
 
 # Edit the .env file with your secure values
 nano .env
@@ -86,16 +105,31 @@ DB_PORT=5432
 APP_PORT=8080
 ```
 
-### 6. Pull the Latest Images
+### 6. Deploy the Application
+
+**Option A: Using the deployment script (Recommended)**
+
+```bash
+# Make the script executable (first time only)
+chmod +x deploy.sh
+
+# Run the deployment script
+./deploy.sh
+```
+
+The script will:
+- Authenticate with ECR
+- Pull the latest image
+- Stop existing containers
+- Start services with health checks
+- Display service status
+
+**Option B: Manual deployment**
 
 ```bash
 # Pull the latest backend image from ECR
 docker compose -f docker-compose.prod.yml pull
-```
 
-### 7. Start the Application
-
-```bash
 # Start all services in detached mode
 docker compose -f docker-compose.prod.yml up -d
 
@@ -106,13 +140,20 @@ docker compose -f docker-compose.prod.yml ps
 docker compose -f docker-compose.prod.yml logs -f
 ```
 
-### 8. Verify Deployment
+**Note:** The backend service now includes health checks and will only start after the database is healthy.
+
+### 7. Verify Deployment
 
 Check that the application is running:
 
 ```bash
-# Test the backend health endpoint
-curl http://localhost:8080/ping
+# Test the frontend health endpoint
+curl http://localhost/health
+
+# Should return: healthy
+
+# Test the backend API via nginx proxy
+curl http://localhost/api/ping
 
 # Should return: {"message":"pong"}
 ```
@@ -124,8 +165,11 @@ From your local machine, test the public endpoint:
 cd terraform
 terraform output application_url
 
-# Test it
-curl http://YOUR_EC2_IP:8080/ping
+# Open in browser
+http://YOUR_EC2_IP/
+
+# Test API
+curl http://YOUR_EC2_IP/api/ping
 ```
 
 ## Common Operations
@@ -134,11 +178,29 @@ curl http://YOUR_EC2_IP:8080/ping
 
 When you push new code and GitHub Actions builds a new image:
 
+**Option A: Using the deployment script (Recommended)**
+
 ```bash
 cd /opt/memesis
 
 # Pull latest code (for migrations, etc.)
 git pull origin main
+
+# Deploy latest version
+./deploy.sh
+```
+
+**Option B: Manual update**
+
+```bash
+cd /opt/memesis
+
+# Pull latest code (for migrations, etc.)
+git pull origin main
+
+# Re-authenticate with ECR (token expires after 12 hours)
+aws ecr get-login-password --region eu-west-1 | \
+  docker login --username AWS --password-stdin 271882567315.dkr.ecr.eu-west-1.amazonaws.com
 
 # Pull latest Docker images
 docker compose -f docker-compose.prod.yml pull

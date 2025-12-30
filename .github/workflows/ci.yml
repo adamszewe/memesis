@@ -77,12 +77,24 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
+    - name: Build, tag, and push frontend image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: memesis-web
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./web
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
     - name: Output image URIs
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: memesis-app
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        echo "Image pushed to:"
-        echo "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-        echo "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
+        echo "Images pushed to:"
+        echo "Backend: $ECR_REGISTRY/memesis-app:$IMAGE_TAG"
+        echo "Backend: $ECR_REGISTRY/memesis-app:latest"
+        echo "Frontend: $ECR_REGISTRY/memesis-web:$IMAGE_TAG"
+        echo "Frontend: $ECR_REGISTRY/memesis-web:latest"
