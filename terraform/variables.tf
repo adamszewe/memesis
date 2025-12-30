@@ -81,14 +81,8 @@ variable "domain_name" {
 }
 
 # CI/CD Configuration
-variable "create_ci_user" {
-  description = "Create IAM user for CI/CD with access keys (not recommended, use OIDC instead)"
-  type        = bool
-  default     = false
-}
-
 variable "enable_github_oidc" {
-  description = "Enable GitHub OIDC provider for GitHub Actions (recommended)"
+  description = "Enable GitHub OIDC provider for GitHub Actions"
   type        = bool
   default     = true
 }

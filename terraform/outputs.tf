@@ -73,25 +73,7 @@ output "ecr_repository_name" {
   value       = aws_ecr_repository.app.name
 }
 
-# CI/CD Outputs - IAM User Method
-output "ci_user_name" {
-  description = "IAM user name for CI/CD (if created)"
-  value       = var.create_ci_user ? aws_iam_user.github_ci[0].name : null
-}
-
-output "ci_user_access_key_id" {
-  description = "Access key ID for CI/CD user (if created)"
-  value       = var.create_ci_user ? aws_iam_access_key.github_ci[0].id : null
-  sensitive   = true
-}
-
-output "ci_user_secret_access_key" {
-  description = "Secret access key for CI/CD user (if created)"
-  value       = var.create_ci_user ? aws_iam_access_key.github_ci[0].secret : null
-  sensitive   = true
-}
-
-# CI/CD Outputs - OIDC Method
+# CI/CD Outputs - OIDC
 output "github_actions_role_arn" {
   description = "ARN of the GitHub Actions IAM role (if OIDC enabled)"
   value       = var.enable_github_oidc ? aws_iam_role.github_actions[0].arn : null
