@@ -1,0 +1,44 @@
+services:
+  backend:
+    container_name: memesis-backend
+    # Pull from ECR - the :latest tag will always get the most recent build
+    image: 271882567315.dkr.ecr.eu-west-1.amazonaws.com/memesis-app:latest
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-memesis}
+      DB_USER: ${DB_USER:-memesis_user}
+      DB_PASSWORD: ${DB_PASSWORD:?Database password must be set}
+      DB_SSLMODE: ${DB_SSLMODE:-disable}
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - app_network
+
+  db:
+    container_name: memesis-db
+    image: postgres:18.1-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-memesis}
+      POSTGRES_USER: ${DB_USER:-memesis_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Database password must be set}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    restart: unless-stopped
+    networks:
+      app_network:
+        aliases:
+          - db.lvh.me
+
+networks:
+  app_network:
+    external: false
+
+volumes:
+  db_data:
