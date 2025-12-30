@@ -1,4 +1,4 @@
-# ECR Repository
+# ECR Repository - Backend
 resource "aws_ecr_repository" "app" {
   name                 = "${var.project_name}-app"
   image_tag_mutability = "MUTABLE"
@@ -12,11 +12,29 @@ resource "aws_ecr_repository" "app" {
   }
 
   tags = {
-    Name = "${var.project_name}-ecr"
+    Name = "${var.project_name}-ecr-backend"
   }
 }
 
-# ECR Lifecycle Policy - Keep only last 5 images
+# ECR Repository - Frontend
+resource "aws_ecr_repository" "web" {
+  name                 = "${var.project_name}-web"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  encryption_configuration {
+    encryption_type = "AES256"
+  }
+
+  tags = {
+    Name = "${var.project_name}-ecr-frontend"
+  }
+}
+
+# ECR Lifecycle Policy - Keep only last 5 images (Backend)
 resource "aws_ecr_lifecycle_policy" "app" {
   repository = aws_ecr_repository.app.name
 
@@ -38,9 +56,54 @@ resource "aws_ecr_lifecycle_policy" "app" {
   })
 }
 
-# ECR Repository Policy - Allow EC2 instance to pull images
+# ECR Lifecycle Policy - Keep only last 5 images (Frontend)
+resource "aws_ecr_lifecycle_policy" "web" {
+  repository = aws_ecr_repository.web.name
+
+  policy = jsonencode({
+    rules = [
+      {
+        rulePriority = 1
+        description  = "Keep last 5 images"
+        selection = {
+          tagStatus     = "any"
+          countType     = "imageCountMoreThan"
+          countNumber   = 5
+        }
+        action = {
+          type = "expire"
+        }
+      }
+    ]
+  })
+}
+
+# ECR Repository Policy - Allow EC2 instance to pull images (Backend)
 resource "aws_ecr_repository_policy" "app" {
   repository = aws_ecr_repository.app.name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowEC2Pull"
+        Effect = "Allow"
+        Principal = {
+          AWS = aws_iam_role.ec2.arn
+        }
+        Action = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ]
+      }
+    ]
+  })
+}
+
+# ECR Repository Policy - Allow EC2 instance to pull images (Frontend)
+resource "aws_ecr_repository_policy" "web" {
+  repository = aws_ecr_repository.web.name
 
   policy = jsonencode({
     Version = "2012-10-17"
